@@ -21,33 +21,37 @@ class NotesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = mutableStateOf(NotesState())
-    private val state: State<NotesState> = _state
+    val state: State<NotesState> = _state
     private var recentlyDeletedNote: Note? = null
     private var getNotesJob: Job? = null
 
     init {
         getNotes(NoteOrder.Date(OrderType.Descending))
     }
+
     fun onEvent(event: NotesEvent) {
-        when(event) {
+        when (event) {
             is NotesEvent.Order -> {
-                if(state.value.noteOrder::class == event.noteOrder::class && state.value.noteOrder.orderType::class == event.noteOrder.orderType::class) {
+                if (state.value.noteOrder::class == event.noteOrder::class && state.value.noteOrder.orderType::class == event.noteOrder.orderType::class) {
                     return
                 }
                 getNotes(event.noteOrder)
             }
+
             is NotesEvent.DeleteNote -> {
                 viewModelScope.launch {
                     noteUseCases.deleteNote(event.note)
                     recentlyDeletedNote = event.note
                 }
             }
+
             is NotesEvent.RestoreNote -> {
                 viewModelScope.launch {
-                    noteUseCases.addNote(recentlyDeletedNote?: return@launch)
+                    noteUseCases.addNote(recentlyDeletedNote ?: return@launch)
                     recentlyDeletedNote = null
                 }
             }
+
             is NotesEvent.ToggleOrderSection -> {
                 _state.value = state.value.copy(
                     isOrderSectionVisible = !state.value.isOrderSectionVisible
