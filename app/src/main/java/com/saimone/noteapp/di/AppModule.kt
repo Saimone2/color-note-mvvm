@@ -7,6 +7,7 @@ import com.saimone.noteapp.feature_note.data.repository.NoteRepositoryImpl
 import com.saimone.noteapp.feature_note.domain.repository.NoteRepository
 import com.saimone.noteapp.feature_note.domain.use_case.AddNote
 import com.saimone.noteapp.feature_note.domain.use_case.DeleteNote
+import com.saimone.noteapp.feature_note.domain.use_case.GetNote
 import com.saimone.noteapp.feature_note.domain.use_case.GetNotes
 import com.saimone.noteapp.feature_note.domain.use_case.NoteUseCases
 import dagger.Module
@@ -39,6 +40,7 @@ object AppModule {
     fun provideNoteUseCases(repository: NoteRepository): NoteUseCases {
         return NoteUseCases(
             getNotes = GetNotes(repository),
+            getNote = GetNote(repository),
             deleteNote = DeleteNote(repository),
             addNote = AddNote(repository)
         )
