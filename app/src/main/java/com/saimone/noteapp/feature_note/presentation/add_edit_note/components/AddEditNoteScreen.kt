@@ -1,5 +1,6 @@
 package com.saimone.noteapp.feature_note.presentation.add_edit_note.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -43,6 +44,7 @@ import com.saimone.noteapp.feature_note.presentation.add_edit_note.AddEditNoteVi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddEditNoteScreen(
     navController: NavController,
@@ -84,6 +86,8 @@ fun AddEditNoteScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
+                modifier = Modifier
+                    .padding(bottom = 16.dp),
                 onClick = {
                     viewModel.onEvent(AddEditNoteEvent.SaveNote)
                 },
@@ -95,12 +99,12 @@ fun AddEditNoteScreen(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
         },
-        content = { padding ->
+        content = {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(noteBackgroundAnimatable.value)
-                    .padding(padding)
+                    .padding(16.dp)
             ) {
                 Row(
                     modifier = Modifier
@@ -108,7 +112,7 @@ fun AddEditNoteScreen(
                         .padding(8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Note.noteColor.forEach { color ->
+                    Note.noteColors.forEach { color ->
                         val colorInt = color.toArgb()
                         Box(
                             modifier = Modifier
@@ -151,7 +155,7 @@ fun AddEditNoteScreen(
                     },
                     isHintVisible = titleState.isHintVisible,
                     singleLine = true,
-                    textStyle = MaterialTheme.typography.titleMedium
+                    textStyle = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 TransparentHintTextField(
@@ -164,7 +168,7 @@ fun AddEditNoteScreen(
                         viewModel.onEvent(AddEditNoteEvent.ChangeContentFocus(it))
                     },
                     isHintVisible = contentState.isHintVisible,
-                    textStyle = MaterialTheme.typography.bodyMedium,
+                    textStyle = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.fillMaxHeight()
                 )
             }

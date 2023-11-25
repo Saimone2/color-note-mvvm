@@ -1,6 +1,5 @@
 package com.saimone.noteapp.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ private val darkColorPalette = darkColorScheme(
 )
 
 @Composable
-fun NoteAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = true, content: @Composable () -> Unit) {
+fun NoteAppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = darkColorPalette,
         typography = Typography,

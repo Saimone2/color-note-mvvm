@@ -1,5 +1,6 @@
 package com.saimone.noteapp.feature_note.presentation.notes.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -38,8 +39,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.saimone.noteapp.feature_note.presentation.notes.NotesEvent
 import com.saimone.noteapp.feature_note.presentation.notes.NotesViewModel
+import com.saimone.noteapp.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NotesScreen(
     navController: NavController,
@@ -52,8 +55,10 @@ fun NotesScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
+                modifier = Modifier
+                    .padding(bottom = 16.dp),
                 onClick = {
-                    //TODO: add note
+                    navController.navigate(Screen.AddEditNoteScreen.route)
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
@@ -63,11 +68,11 @@ fun NotesScreen(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
         },
-        content = { padding ->
+        content = {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding)
+                    .padding(16.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -76,7 +81,7 @@ fun NotesScreen(
                 ) {
                     Text(
                         text = "Your notes",
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.titleLarge
                     )
                     IconButton(
                         onClick = {
@@ -100,7 +105,7 @@ fun NotesScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 16.dp),
+                            .padding(vertical = 6.dp),
                         noteOrder = state.noteOrder
                     )
                 }
@@ -114,7 +119,10 @@ fun NotesScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        // TODO: item clicked
+                                        navController.navigate(
+                                            Screen.AddEditNoteScreen.route +
+                                                    "?noteId=${note.id}&noteColor=${note.color}"
+                                        )
                                     },
                                 onDeleteClick = {
                                     viewModel.onEvent(NotesEvent.DeleteNote(note))
@@ -129,10 +137,10 @@ fun NotesScreen(
                                     }
                                 }
                             )
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     )
