@@ -1,12 +1,14 @@
 package com.saimone.noteapp.feature_note.presentation.notes.components
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,16 +32,21 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.saimone.noteapp.feature_note.presentation.notes.NotesEvent
 import com.saimone.noteapp.feature_note.presentation.notes.NotesViewModel
 import com.saimone.noteapp.feature_note.presentation.util.Screen
+import com.saimone.noteapp.ui.theme.darkColorPalette
+import com.saimone.noteapp.ui.theme.lightColorPalette
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,9 +55,20 @@ fun NotesScreen(
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel(),
 ) {
+    val view = LocalView.current
+    val window = (view.context as Activity).window
     val state = viewModel.state.value
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    val colorScheme = when {
+        isSystemInDarkTheme() -> darkColorPalette
+        else -> lightColorPalette
+    }
+
+    SideEffect {
+        window.statusBarColor = colorScheme.background.toArgb()
+    }
 
     Scaffold(
         floatingActionButton = {

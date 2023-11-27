@@ -1,6 +1,7 @@
 package com.saimone.noteapp.feature_note.presentation.add_edit_note.components
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -28,6 +29,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -35,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -51,6 +54,8 @@ fun AddEditNoteScreen(
     noteColor: Int,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
+    val view = LocalView.current
+    val window = (view.context as Activity).window
     val titleState = viewModel.noteTitle.value
     val contentState = viewModel.noteContent.value
     val snackbarHostState = remember { SnackbarHostState() }
@@ -81,6 +86,10 @@ fun AddEditNoteScreen(
                 }
             }
         }
+    }
+
+    SideEffect {
+        window.statusBarColor = noteBackgroundAnimatable.value.toArgb()
     }
 
     Scaffold(
@@ -138,7 +147,8 @@ fun AddEditNoteScreen(
                                             )
                                         )
                                     }
-                                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(colorInt))
+                                    window.statusBarColor = colorInt
+                                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(noteBackgroundAnimatable.value.toArgb()))
                                 }
                         )
                     }
