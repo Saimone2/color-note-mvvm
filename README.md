@@ -1,4 +1,4 @@
-# Note App
+# Color Note
 
 ### Overview
 Note App is a mobile application designed to create and view notes with a focus on clean architecture using MVVM, CRUD operations, Room, and Jetpack Compose. Clean architecture is a software design principle that advocates for the separation of concerns and logical distribution of code to facilitate the application’s evolution, testing, and maintenance. 
