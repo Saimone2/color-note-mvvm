@@ -148,7 +148,7 @@ fun AddEditNoteScreen(
                                         )
                                     }
                                     window.statusBarColor = colorInt
-                                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(noteBackgroundAnimatable.value.toArgb()))
+                                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(colorInt))
                                 }
                         )
                     }
